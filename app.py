@@ -52,7 +52,7 @@ selected_palette = st.sidebar.selectbox("Color Palette", color_palettes)
 st.subheader(f"📊 Horsepower of {selected_brand} Models")
 
 if not filtered_df.empty:
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(5, 6))
     color_map = sns.color_palette(selected_palette, len(filtered_df))
     sns.barplot(
         data=filtered_df,
