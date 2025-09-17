@@ -9,7 +9,7 @@ st.set_page_config(page_title="Car Horsepower Explorer", layout="wide")
 # Load dataset
 @st.cache_data
 def load_data():
-    df = pd.read_csv("../Datasets/CARS.csv")
+    df = pd.read_csv("CARS.csv")
     return df
 
 df = load_data()
