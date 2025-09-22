@@ -35,18 +35,17 @@ brand_df = df[df['Make'] == selected_brand]
 st.subheader(f"🚗 Horsepower Visualization for {selected_brand}")
 st.write("Explore horsepower of car models with a selectable color palette.")
 
-# Plot horsepower bar chart
+# Plot horsepower horizontal bar chart
 if not brand_df.empty:
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(12, 8))
     sb.barplot(
-        x='Model',
-        y='Horsepower',
+        y='Model',  # Swap x and y for horizontal bars
+        x='Horsepower',
         data=brand_df,
         palette=selected_palette
     )
-    plt.xticks(rotation=45, ha='right')
-    plt.ylabel("Horsepower")
-    plt.xlabel("Model")
+    plt.xlabel("Horsepower")
+    plt.ylabel("Model")
     plt.title(f"Horsepower of {selected_brand} Models", fontsize=16)
     st.pyplot(plt.gcf())
 else:
