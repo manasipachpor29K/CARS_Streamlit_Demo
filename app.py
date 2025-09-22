@@ -6,6 +6,17 @@ import matplotlib.pyplot as plt
 # Load CSV locally
 df = pd.read_csv("CARS.csv")  # Make sure this file is in the same folder
 
+# Top colorful headline
+st.markdown(
+    """
+    <h1 style='text-align: center; font-weight: bold; background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+               -webkit-background-clip: text; color: transparent;'>
+        Cars Data
+    </h1>
+    """,
+    unsafe_allow_html=True
+)
+
 # Sidebar filters
 st.sidebar.header("Filter Options")
 
@@ -20,8 +31,8 @@ selected_palette = st.sidebar.selectbox("Select Color Palette", color_palettes)
 # Filter data for the selected brand
 brand_df = df[df['Make'] == selected_brand]
 
-# Title
-st.title(f"🚗 Horsepower Visualization for {selected_brand}")
+# Section Title
+st.subheader(f"🚗 Horsepower Visualization for {selected_brand}")
 st.write("Explore horsepower of car models with a selectable color palette.")
 
 # Plot horsepower bar chart
