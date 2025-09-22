@@ -26,14 +26,10 @@ st.write("Use the sidebar to filter data, choose color palettes, and explore hor
 st.subheader(f"📊 Line Chart - Horsepower {f'for {', '.join(models)}' if models else ''}")
 
 if not filtered_df.empty:
-    chart = (
-        alt.Chart(filtered_df)
-        .mark_line(point=True)
-        .encode(
-            x="Model:N",
-            y="Horsepower:Q",
-            color=alt.Color("Model:N", scale=alt.Scale(scheme=palette))  # 👈 Apply selected palette
-        )
+    chart = alt.Chart(filtered_df).mark_line(point=True).encode(
+        x="Model:N",
+        y="Horsepower:Q",
+        color="Model:N"
     )
     st.altair_chart(chart, use_container_width=True)
 else:
