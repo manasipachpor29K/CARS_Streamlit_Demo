@@ -3,9 +3,8 @@ import pandas as pd
 import seaborn as sb
 import matplotlib.pyplot as plt
 
-# Load CSV from GitHub
-csv_url = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/CARS.csv"
-df = pd.read_csv("Cars.csv")
+# Load CSV locally (replace with your path)
+df = pd.read_csv("CARS.csv")  # Make sure this file is in the same folder as this script
 
 # Sidebar - user inputs
 st.sidebar.header("Filter Options")
