@@ -2,9 +2,24 @@ import streamlit as st
 import pandas as pd
 import seaborn as sb
 import matplotlib.pyplot as plt
+from PIL import Image
 
 # Load CSV locally
 df = pd.read_csv("CARS.csv")  # Make sure this file is in the same folder
+
+# Set background image (light transparent car image)
+page_bg_img = """
+<style>
+.stApp {
+background-image: url("https://i.ibb.co/YZB7xjX/light-car-background.jpg");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
+</style>
+"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Top colorful headline
 st.markdown(
@@ -28,14 +43,14 @@ selected_brand = st.sidebar.selectbox("Select Car Brand", brands)
 color_palettes = ["viridis", "plasma", "magma", "cividis", "coolwarm", "Set2", "pastel"]
 selected_palette = st.sidebar.selectbox("Select Color Palette", color_palettes)
 
-# Select plot type
-plot_type = st.sidebar.radio("Select Plot Type", ["Bar Plot", "Line Plot", "Pie Chart"])
+# Select Plot Type
+plot_type = st.sidebar.radio("Select Plot Type", ["Bar Plot", "Line Plot", "Scatter Plot", "Pie Chart"])
 
 # Filter data for the selected brand
 brand_df = df[df['Make'] == selected_brand]
 
 # Section Title
-st.subheader(f"🚗 Horsepower Visualization for {selected_brand}")
+st.subheader(f"🚗 Visualization for {selected_brand}")
 st.write("Select the type of chart from the sidebar and choose a color palette.")
 
 if not brand_df.empty:
@@ -65,21 +80,25 @@ if not brand_df.empty:
         plt.ylabel("Horsepower")
         plt.title(f"Horsepower of {selected_brand} Models (Line Plot)", fontsize=16)
 
+    elif plot_type == "Scatter Plot":
+        sb.scatterplot(
+            x='Model',
+            y='Horsepower',
+            size='Horsepower',
+            hue='Horsepower',
+            palette=selected_palette,
+            data=brand_df,
+            sizes=(50, 300),
+            legend=False
+        )
+        plt.xticks(rotation=45, ha='right')
+        plt.xlabel("Model")
+        plt.ylabel("Horsepower")
+        plt.title(f"Horsepower Scatter of {selected_brand} Models", fontsize=16)
+
     elif plot_type == "Pie Chart":
         plt.pie(
             brand_df['Horsepower'],
             labels=brand_df['Model'],
             autopct='%1.1f%%',
-            colors=sb.color_palette(selected_palette, n_colors=len(brand_df)),
-            startangle=140
-        )
-        plt.axis('equal')  # Equal aspect ratio ensures pie is circular
-        plt.title(f"Horsepower Distribution among {selected_brand} Models", fontsize=16)
-
-    st.pyplot(plt.gcf())
-else:
-    st.warning("⚠️ No data available for this brand.")
-
-# Show all details for the selected brand
-st.subheader(f"📋 All Details for {selected_brand}")
-st.dataframe(brand_df)
+            colors=sb.color_palette(selected_palette,
