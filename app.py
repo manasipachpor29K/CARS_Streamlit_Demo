@@ -1,39 +1,40 @@
 import streamlit as st
 import pandas as pd
-import altair as alt
+import seaborn as sb
+import matplotlib.pyplot as plt
 
 # Load CSV from GitHub
-csv_url = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/cars.csv"
-df = pd.read_csv(Cars.csv)
+csv_url = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/CARS.csv"
+df = pd.read_csv("Cars.csv")
 
-# Sidebar filters
+# Sidebar - user inputs
 st.sidebar.header("Filter Options")
-hp_range = st.sidebar.slider("Select Horsepower Range", int(df['Horsepower'].min()), int(df['Horsepower'].max()),
-                             (int(df['Horsepower'].min()), int(df['Horsepower'].max())))
-models = st.sidebar.multiselect("Select Models (optional)", df['Model'].unique())
-palette = st.sidebar.selectbox("Color Palette", ["viridis", "plasma", "magma", "cividis"])
+brands = df['Make'].unique()
+selected_brand = st.sidebar.selectbox("Select Car Brand", brands)
 
-# Filter data
-filtered_df = df[(df['Horsepower'] >= hp_range[0]) & (df['Horsepower'] <= hp_range[1])]
-if models:
-    filtered_df = filtered_df[filtered_df['Model'].isin(models)]
+color_palettes = ["viridis", "plasma", "magma", "cividis", "coolwarm", "Set2", "pastel"]
+selected_palette = st.sidebar.selectbox("Select Color Palette", color_palettes)
+
+# Filter data by brand
+filtered_df = df[df['Make'] == selected_brand]
 
 # Title
-st.title("🚗 Creative Car Horsepower Bar Plot")
-st.write("Explore horsepower of car models with a colorful, interactive bar chart.")
+st.title(f"🚗 Horsepower of {selected_brand} Cars")
+st.write("Interactive bar plot with selectable color palettes for creativity.")
 
-# Bar chart
+# Plot
 if not filtered_df.empty:
-    chart = alt.Chart(filtered_df).mark_bar(cornerRadiusTopLeft=5, cornerRadiusTopRight=5).encode(
-        x=alt.X("Model:N", sort='-y', title="Car Model"),
-        y=alt.Y("Horsepower:Q", title="Horsepower"),
-        color=alt.Color("Horsepower:Q", scale=alt.Scale(scheme=palette), title="HP"),
-        tooltip=["Model", "Horsepower"]
-    ).properties(
-        width=700,
-        height=400
-    ).interactive()
-
-    st.altair_chart(chart, use_container_width=True)
+    plt.figure(figsize=(12, 6))
+    sb.barplot(
+        x='Model',
+        y='Horsepower',
+        data=filtered_df,
+        palette=selected_palette
+    )
+    plt.xticks(rotation=45, ha='right')
+    plt.ylabel("Horsepower")
+    plt.xlabel("Model")
+    plt.title(f"Horsepower of {selected_brand} Models", fontsize=16)
+    st.pyplot(plt.gcf())
 else:
-    st.warning("⚠️ No data available for the selected filters.")
+    st.warning("⚠️ No data available for this brand.")
