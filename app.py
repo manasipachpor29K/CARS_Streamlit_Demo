@@ -13,15 +13,11 @@ st.sidebar.header("Filter Options")
 brands = df['Make'].unique()
 selected_brand = st.sidebar.selectbox("Select Car Brand", brands)
 
-# Select Car Model
-models = df[df['Make'] == selected_brand]['Model'].unique()
-selected_model = st.sidebar.selectbox("Select Car Model", models)
-
 # Color palette selection
 color_palettes = ["viridis", "plasma", "magma", "cividis", "coolwarm", "Set2", "pastel"]
 selected_palette = st.sidebar.selectbox("Select Color Palette", color_palettes)
 
-# Filter data for plotting
+# Filter data for the selected brand
 brand_df = df[df['Make'] == selected_brand]
 
 # Title
@@ -45,7 +41,6 @@ if not brand_df.empty:
 else:
     st.warning("⚠️ No data available for this brand.")
 
-# Show details of the selected car
-st.subheader(f"📋 Details for {selected_model}")
-car_details = df[(df['Make'] == selected_brand) & (df['Model'] == selected_model)]
-st.dataframe(car_details.T)  # Transposed for better readability
+# Show all details for the selected brand
+st.subheader(f"📋 All Details for {selected_brand}")
+st.dataframe(brand_df)
