@@ -56,4 +56,4 @@ st.subheader(f"📊 {chart_type} - Horsepower for {selected_brand}")
 
 if not filtered_df.empty:
     # Sort by horsepower for cleaner visual
-    sorted_df = filtered_
+    sorted_df = filtered_df
